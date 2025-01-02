@@ -1,2 +1,2 @@
 # rivalsteamrandom
-Marvel Rivals team randomizer
+Marvel Rivals Team Randomizer
