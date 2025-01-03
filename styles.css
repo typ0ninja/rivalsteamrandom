@@ -1,0 +1,75 @@
+/* Custom styles for colored checkboxes */
+.custom-checkbox input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Tank checkbox styling */
+.tank-checkbox input[type="checkbox"] {
+    background-color: white;
+    border-color: blue;
+}
+
+.tank-checkbox input[type="checkbox"]:checked {
+    background-color: white;
+    border-color: blue;
+}
+
+.tank-checkbox input[type="checkbox"]:checked::after {
+    content: '✔';
+    color: blue;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    left: 3px;
+    font-size: 16px;
+}
+
+/* Healer checkbox styling */
+.healer-checkbox input[type="checkbox"] {
+    background-color: white;
+    border-color: green;
+}
+
+.healer-checkbox input[type="checkbox"]:checked {
+    background-color: white;
+    border-color: green;
+}
+
+.healer-checkbox input[type="checkbox"]:checked::after {
+    content: '✔';
+    color: green;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    left: 3px;
+    font-size: 16px;
+}
+
+/* DPS checkbox styling */
+.dps-checkbox input[type="checkbox"] {
+    background-color: white;
+    border-color: red;
+}
+
+.dps-checkbox input[type="checkbox"]:checked {
+    background-color: white;
+    border-color: red;
+}
+
+.dps-checkbox input[type="checkbox"]:checked::after {
+    content: '✔';
+    color: red;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    left: 3px;
+    font-size: 16px;
+}
