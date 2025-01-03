@@ -12,9 +12,9 @@
 <div>
     <label for="randomType">Random Type:</label>
     <select id="randomType">
-        <option value="balanced">Balanced</option>
-        <option value="random">Random</option>
-        <option value="role-heavy">Role Heavy</option>
+        <option value="balanced">Balanced Team</option>
+        <option value="random">True Random</option>
+        <option value="roleSelect">Selected Roles</option>
     </select>
 </div>
 <br>
@@ -32,6 +32,7 @@
     <br><br>
     <button type="button" onclick="processPlayers()">Submit</button>
 </form>
+<div id="resultsContainer"></div>
 <script src="processPlayers.js"></script>
 </body>
 </html>

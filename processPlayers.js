@@ -1,3 +1,21 @@
+const heroesByRole = new Map([
+    ["Vanguards", [
+        "Captain America", "Doctor Strange", "Groot", "Hulk",
+        "Magneto", "Peni Parker", "Thor", "Venom"
+    ]],
+    ["Duelists", [
+        "Black Panther", "Black Widow", "Hawkeye", "Hela",
+        "Iron Fist", "Iron Man", "Magik", "Moon Knight",
+        "Namor", "Psylocke", "Punisher", "Scarlet Witch",
+        "Spider-Man", "Squirrel Girl", "Star-Lord", "Storm",
+        "Winter Soldier", "Wolverine"
+    ]],
+    ["Strategists", [
+        "Adam Warlock", "Cloak & Dagger", "Jeff the Land Shark",
+        "Loki", "Luna Snow", "Mantis", "Rocket Raccoon"
+    ]]
+]);
+
 function showPlayerInputs() {
     // Get the number of players selected
     const numPlayers = parseInt(document.getElementById("numPlayers").value);
@@ -32,20 +50,101 @@ function showPlayerInputs() {
     }
 }
 
+function balancedRandom(playerSelection, selectedHeroes) {
+    // Copy starting hero list for editing what is still available
+    const availableHeroes = new Map(
+        Array.from(heroesByRole, ([role, heroes]) => [role, [...heroes]])
+    );
+
+
+}
+
+function trueRandom(playerSelection, selectedHeroes) {
+    // Copy starting hero list for editing what is still available
+    const availableHeroes = new Map(
+        Array.from(heroesByRole, ([role, heroes]) => [role, [...heroes]])
+    );
+
+    for (let [playerKey, roleChk] of playerSelection) {
+        //get random role
+        const rolesArray = Array.from(availableHeroes.keys());
+        const roleIndex = Math.floor(Math.random() * rolesArray.length);
+        //get random hero
+        const heroesArray = availableHeroes.get(rolesArray[roleIndex]);
+        const heroIndex = Math.floor(Math.random() * heroesArray.length);
+        //save selected hero
+        const heroResult = heroesArray[heroIndex];
+        //add to selected
+        selectedHeroes.set(playerKey, heroResult);
+        //remove selected hero from available heroes
+        heroesArray.splice(heroIndex, 1);
+    }
+}
+function roleChoice(playerSelection, selectedHeroes) {
+    // Copy starting hero list for editing what is still available
+    const availableHeroes = new Map(
+        Array.from(heroesByRole, ([role, heroes]) => [role, [...heroes]])
+    );
+
+}
+
+function displayResults(selectedHeroes) {
+    const resultsContainer = document.getElementById('resultsContainer');
+
+    // Clear previous results
+    resultsContainer.innerHTML = '';
+
+    // Add a heading for the results
+    const heading = document.createElement('h2');
+    heading.textContent = 'Selected Heroes';
+    resultsContainer.appendChild(heading);
+
+    // Append each map entry to the results container
+    selectedHeroes.forEach((hero, player) => {
+        const resultElement = document.createElement('div');
+        resultElement.innerHTML = `<strong>${player}:</strong> ${hero}`;
+        resultsContainer.appendChild(resultElement);
+    });
+}
+
 function processPlayers() {
     const numPlayers = parseInt(document.getElementById("numPlayers").value);
-    const names = [];
+    const playerSelection = new Map();
 
     for (let i = 1; i <= numPlayers; i++) {
+        //containers for form selection
         const playerName = document.getElementById(`player${i}`).value;
+        const tankSelect = document.getElementById(`tank${i}`).checked;
+        const healerSelect = document.getElementById(`healer${i}`).checked;
+        const dpsSelect = document.getElementById(`dps${i}`).checked;
+        //map player name to role selections
         if (playerName.trim()) {
-            names.push(playerName);
+            playerSelection.set(playerName.trim(), [tankSelect, healerSelect, dpsSelect]);
         } else {
             alert(`Please enter a name for Player ${i}.`);
             return;
         }
     }
 
-    console.log("Selected Players:", names);
-    alert("Selected Players: " + names.join(", "));
+    //generate character selections based on ruleset
+    const selectedHeroes = new Map;
+
+    switch (document.getElementById("randomType").value.toLowerCase()) {
+        case "balanced":
+            balancedRandom(playerSelection, selectedHeroes);
+            break;
+        case "random":
+            trueRandom(playerSelection, selectedHeroes);
+            break;
+        case "roleSelect":
+            roleChoice(playerSelection, selectedHeroes);
+            break;
+        default:
+            trueRandom(playerSelection, selectedHeroes);
+            break;
+    }
+
+    //update html to show results
+    displayResults(selectedHeroes);
 }
+
