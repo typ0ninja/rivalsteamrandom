@@ -50,13 +50,59 @@ function showPlayerInputs() {
     }
 }
 
-function balancedRandom(playerSelection, selectedHeroes) {
+function boundedRandom(playerSelection, selectedHeroes, tankCnt, HealCnt, DPSCnt){
     // Copy starting hero list for editing what is still available
     const availableHeroes = new Map(
         Array.from(heroesByRole, ([role, heroes]) => [role, [...heroes]])
     );
 
+    let remainTank = tankCnt;
+    let remainHeal = HealCnt;
+    let remainDPS = DPSCnt;
 
+    for (let [playerKey, roleChk] of playerSelection) {
+        //get random role
+        const rolesArray = Array.from(availableHeroes.keys());
+        const roleIndex = Math.floor(Math.random() * rolesArray.length);
+        //get random hero
+        const heroesArray = availableHeroes.get(rolesArray[roleIndex]);
+        const heroIndex = Math.floor(Math.random() * heroesArray.length);
+        //save selected hero
+        const heroResult = heroesArray[heroIndex];
+        //add to selected
+        selectedHeroes.set(playerKey, heroResult);
+        //remove selected hero from available heroes
+        heroesArray.splice(heroIndex, 1);
+        switch (roleIndex) {
+            case 0://tanks
+                remainTank--;
+                if (remainTank <= 0) {
+                    //remove entire key
+                    availableHeroes.delete(rolesArray[roleIndex]);
+                }
+                break;
+            case 1://healers
+                remainHeal--;
+                if (remainHeal <= 0) {
+                    //remove entire key
+                    availableHeroes.delete(rolesArray[roleIndex]);
+                }
+                break;
+            case 2://dps
+                remainDPS--;
+                if (remainDPS <= 0) {
+                    //remove entire key
+                    availableHeroes.delete(rolesArray[roleIndex]);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+function balancedRandom(playerSelection, selectedHeroes) {
+    boundedRandom(playerSelection, selectedHeroes, 2, 2, 2);
 }
 
 function trueRandom(playerSelection, selectedHeroes) {
