@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Randomize Rivals Team</title>
+    <style>
+        /* Custom styles for colored checkboxes */
+        .custom-checkbox input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            margin: 0 5px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Tank checkbox styling */
+        .tank-checkbox input[type="checkbox"] {
+            background-color: white;
+            border-color: blue;
+        }
+
+        .tank-checkbox input[type="checkbox"]:checked {
+            background-color: white;
+            border-color: blue;
+        }
+
+        .tank-checkbox input[type="checkbox"]:checked::after {
+            content: '✔';
+            color: blue;
+            font-weight: bold;
+            position: absolute;
+            top: 0;
+            left: 3px;
+            font-size: 16px;
+        }
+
+        /* Healer checkbox styling */
+        .healer-checkbox input[type="checkbox"] {
+            background-color: white;
+            border-color: green;
+        }
+
+        .healer-checkbox input[type="checkbox"]:checked {
+            background-color: white;
+            border-color: green;
+        }
+
+        .healer-checkbox input[type="checkbox"]:checked::after {
+            content: '✔';
+            color: green;
+            font-weight: bold;
+            position: absolute;
+            top: 0;
+            left: 3px;
+            font-size: 16px;
+        }
+
+        /* DPS checkbox styling */
+        .dps-checkbox input[type="checkbox"] {
+            background-color: white;
+            border-color: red;
+        }
+
+        .dps-checkbox input[type="checkbox"]:checked {
+            background-color: white;
+            border-color: red;
+        }
+
+        .dps-checkbox input[type="checkbox"]:checked::after {
+            content: '✔';
+            color: red;
+            font-weight: bold;
+            position: absolute;
+            top: 0;
+            left: 3px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<h1>Choose Players</h1>
+<!-- Random Type Dropdown -->
+<div>
+    <label for="randomType">Random Type:</label>
+    <select id="randomType">
+        <option value="balanced">Balanced</option>
+        <option value="random">Random</option>
+        <option value="role-heavy">Role Heavy</option>
+    </select>
+</div>
+<br>
+<form id="nameForm">
+    <label for="numPlayers">How many players?</label>
+    <select id="numPlayers" onchange="showPlayerInputs()">
+        <option value="0">Select</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+    </select>
+    <br><br>
+    <button type="button" onclick="processPlayers()">Submit</button>
+</form>
+
+<script>
+    function showPlayerInputs() {
+        // Get the number of players selected
+        const numPlayers = parseInt(document.getElementById("numPlayers").value);
+        const form = document.getElementById("nameForm");
+
+        // Remove any previously added player inputs
+        const existingInputs = document.querySelectorAll(".player-input");
+        existingInputs.forEach(input => input.remove());
+
+        // Add new player inputs
+        for (let i = 1; i <= numPlayers; i++) {
+            const inputDiv = document.createElement("div");
+            inputDiv.classList.add("player-input");
+            inputDiv.innerHTML = `
+            <label for="player${i}">Player ${i}:</label>
+                <input type="text" id="player${i}" name="player${i}">
+                <label class="custom-checkbox tank-checkbox">
+                    <input type="checkbox" id="tank${i}" name="tank${i}">
+                </label>
+                <label for="tank${i}" style="color: blue;">Tank</label>
+                <label class="custom-checkbox healer-checkbox">
+                    <input type="checkbox" id="healer${i}" name="healer${i}">
+                </label>
+                <label for="healer${i}" style="color: green;">Healer</label>
+                <label class="custom-checkbox dps-checkbox">
+                    <input type="checkbox" id="dps${i}" name="dps${i}">
+                </label>
+                <label for="dps${i}" style="color: red;">DPS</label>
+                <br><br>
+        `;
+            form.insertBefore(inputDiv, form.querySelector("button"));
+        }
+    }
+
+    function processPlayers() {
+        const numPlayers = parseInt(document.getElementById("numPlayers").value);
+        const names = [];
+
+        for (let i = 1; i <= numPlayers; i++) {
+            const playerName = document.getElementById(`player${i}`).value;
+            if (playerName.trim()) {
+                names.push(playerName);
+            } else {
+                alert(`Please enter a name for Player ${i}.`);
+                return;
+            }
+        }
+
+        console.log("Selected Players:", names);
+        alert("Selected Players: " + names.join(", "));
+    }
+</script>
+</body>
+</html>
